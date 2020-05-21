@@ -1,0 +1,391 @@
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <meta content="width=device-width, initial-scale=1, shrink-to-fit=no" name="viewport">
+</head>
+
+<body>
+<div class="dashboard-main-wrapper">
+  <div class="dashboard-header">
+    <nav class="navbar navbar-expand-lg bg-white fixed-top">
+      <a class="navbar-brand" href="index.html">PROPERTY SCRAPPER</a>
+      <button aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation"
+              class="navbar-toggler"
+              data-target="#navbarSupportedContent" data-toggle="collapse" type="button">
+        <i class="fas fa-caret-down"></i>
+      </button>
+      <div class="collapse navbar-collapse " id="navbarSupportedContent">
+        <ul class="navbar-nav ml-auto navbar-right-top">
+          <li class="nav-item dropdown nav-user">
+            <a aria-expanded="false" aria-haspopup="true" class="nav-link nav-user-img" data-toggle="dropdown" href="#" id="navbarDropdownMenuLink2"><i class="fas fa-user"></i></a>
+            <div aria-labelledby="navbarDropdownMenuLink2" class="dropdown-menu dropdown-menu-right nav-user-dropdown">
+              <div class="nav-user-info">
+                <h5 class="mb-0 text-white nav-user-name">{{username}}</h5>
+                <span class="status"></span><span class="ml-2">Available</span>
+              </div>
+              <a class="dropdown-item"><i class="fas fa-power-off mr-2" (click)="logoutButtonClick()"></i>Logout</a>
+            </div>
+          </li>
+        </ul>
+      </div>
+    </nav>
+  </div>
+
+  <div class="nav-left-sidebar sidebar-dark">
+    <div class="menu-list">
+      <nav class="navbar navbar-expand-lg navbar-light">
+        <ul class="navbar-nav flex-column">
+          <li class="nav-divider">
+            Menu
+          </li>
+          <li (click)="menuClick(0)" class="nav-item ">
+            <a aria-controls="submenu-1" aria-expanded="false" class="{{panelType==0 ? 'nav-link active' : 'nav-link'}}"
+               data-target="#submenu-1"
+               data-toggle="collapse" href="#"><i
+              class="fa fa-fw fa-tasks"></i>Tasks<span class="badge badge-success">6</span></a>
+          </li>
+          <li (click)="menuClick(1)" class="nav-item ">
+            <a aria-controls="submenu-1" aria-expanded="false" class="{{panelType==1 ? 'nav-link active' : 'nav-link'}}"
+               data-target="#submenu-1"
+               data-toggle="collapse" href="#"><i class="fa fa-fw fa-chart-line"></i>Data
+              analysis<span class="badge badge-success">6</span></a>
+          </li>
+        </ul>
+      </nav>
+    </div>
+  </div>
+
+  <div class="dashboard-wrapper">
+    <div class="dashboard-ecommerce" id="page0">
+      <div class="container-fluid dashboard-content ">
+        <div class="row">
+          <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+            <div class="page-header">
+              <h2 class="pageheader-title">Tasks planning</h2>
+              <div class="page-breadcrumb">
+                <nav aria-label="breadcrumb">
+                  <ol class="breadcrumb">
+                    <li class="breadcrumb-item"><a class="breadcrumb-link" href="#">Menu</a></li>
+                    <li aria-current="page" class="breadcrumb-item active">Tasks</li>
+                  </ol>
+                </nav>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="ecommerce-widget">
+          <div class="row">
+            <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+              <div class="card">
+                <h5 class="card-header">Planned tasks</h5>
+                <div class="card-body">
+                  <div class="table-responsive">
+                    <table *ngIf="tasks.length > 0" class="table table-striped table-bordered">
+                      <thead>
+                      <tr>
+                        <th *ngFor="let item of taskKeyMapping">
+                          {{item[1]}}
+                        </th>
+                        <th>Delete</th>
+                      </tr>
+                      </thead>
+                      <tbody>
+                      <tr *ngFor="let task of tasks; let i = index;">
+                        <td *ngFor="let item of taskKeyMapping">
+                          {{task[item[0]]}}
+                        </td>
+                        <td style="width: 1%">
+                          <button class="btn btn-sm btn-outline-light" id="delTaskId:{{i}}" (click)="deleteTask($event)">
+                            <i class="far fa-trash-alt"></i>
+                          </button>
+                        </td>
+                      </tr>
+                      </tbody>
+                      <tfoot>
+                      </tfoot>
+                    </table>
+                    <table *ngIf="tasks.length == 0" class="table table-striped table-bordered">
+                      <thead>
+                      <tr style="text-align: center">
+                        <th>Planned tasks table</th>
+                      </tr>
+                      </thead>
+                      <tbody>
+                      <tr>
+                        <td style="text-align: center">
+                          <label style="display: inline-block">
+                            No tasks are planned for your account. You can add them in "New task" form
+                          </label>
+                        </td>
+                      </tr>
+                      </tbody>
+                      <tfoot>
+                      </tfoot>
+                    </table>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="row">
+            <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+              <div class="card">
+                <h5 class="card-header">New task</h5>
+                <div class="card-body">
+                    <div class="row mb-3">
+                      <div class="col-md-4">
+                        <label>Task name</label>
+                        <input class="form-control" type="text" id="taskNameIn">
+                      </div>
+                      <div class="col-md-4">
+                        <label>Site to scrape</label>
+                        <select class="custom-select d-block w-100" id="siteIn">
+                          <option>Only Olx</option>
+                          <option>Only Otodom</option>
+                          <option>Olx with offers linking to Otodom</option>
+                        </select>
+                      </div>
+                      <div class="col-md-4">
+                        <label>Offers type</label>
+                        <select class="custom-select d-block w-100" id="offersTypeIn">
+                          <option>sell</option>
+                          <option>rent</option>
+                        </select>
+                      </div>
+                    </div>
+
+                    <div class="row">
+                      <div class="col-md-6 row-sameheight">
+                        <div class="card col-sameheight">
+                          <div class="card-body">
+                              <label>Choose regions</label>
+                              <hr class="mb-4">
+                              <div id="vmap" style="height: 450px;"></div>
+                          </div>
+                        </div>
+                      </div>
+
+                      <div class="col-md-6 row-sameheight">
+                        <div class="card col-sameheight">
+                          <div class="card-body">
+                            <label>Choose localizations</label>
+                            <hr class="mb-4">
+
+                            <div class="input-group mb-4">
+                              <input class="form-control" type="text" id="newLocalizationIn">
+                              <div class="input-group-append">
+                                <button class="btn btn-sm btn-outline-light" id="newLocalizationButton" (click)="newLocalizationButtonClick()">Add city/village</button>
+                              </div>
+                            </div>
+
+                            <div class="table-responsive" style="overflow-y: scroll; height:400px;">
+                              <table *ngIf="localizations.length > 0" class="table table-striped table-bordered">
+                                <thead>
+                                  <tr>
+                                    <th>City/Village</th>
+                                    <th>Delete</th>
+                                  </tr>
+                                </thead>
+                                <tbody>
+                                  <tr *ngFor="let localization of localizations">
+                                    <td> {{localization}} </td>
+                                    <td style="width: 1%">
+                                      <button class="btn btn-sm btn-outline-light" id="{{localization + 'DeleteButton'}}" (click)="deletelocalizationButtonClick($event)">
+                                        <i class="far fa-trash-alt"></i>
+                                      </button>
+                                    </td>
+                                  </tr>
+                                </tbody>
+                                <tfoot>
+                                </tfoot>
+                              </table>
+                              <table *ngIf="localizations.length == 0" class="table table-striped table-bordered">
+                                <thead>
+                                <tr>
+                                  <th style="text-align: center">City/Village</th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                <tr>
+                                  <td style="text-align: center">
+                                    <label style="display: inline-block">
+                                      No additional localizations besides selected regions
+                                    </label>
+                                  </td>
+                                </tr>
+                                </tbody>
+                                <tfoot>
+                                </tfoot>
+                              </table>
+                            </div>
+
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+
+                    <div class="row">
+                      <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+                        <div class="card">
+                          <div class="card-body">
+                            <label>Choose schedule</label>
+                            <hr class="mb-4">
+                            <div class="row">
+                              <div class="col-md-4">
+                                <label>Date and time of first run</label>
+                                <input class="form-control" type="text" id="datetimeIn" disabled placeholder="Select date and time">
+                                <div>
+                                  <label>Recurring</label>
+                                  <select class="custom-select d-block w-100" id="recurringIn">
+                                    <option>Only one run</option>
+                                    <option>Every 1 minute</option>
+                                    <option>Every 3 minutes</option>
+                                    <option>Every day</option>
+                                    <option>Every 3 days</option>
+                                    <option>Every week</option>
+                                    <option>Every month</option>
+                                  </select>
+                                </div>
+                              </div>
+                              <div class="col-md-8">
+                                <div id="datetimepickerIn"></div>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+
+                    <button class="btn btn-primary btn-lg btn-block" id="submitButton" (click)="addtaskButtonClick()">Add task</button>
+                </div>
+              </div>
+            </div>
+          </div>
+
+
+        </div>
+      </div>
+    </div>
+
+    <div class="dashboard-ecommerce" id="page1">
+      <div class="container-fluid dashboard-content ">
+        <div class="row">
+          <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+            <div class="page-header">
+              <h2 class="pageheader-title">Executed tasks</h2>
+              <div class="page-breadcrumb">
+                <nav aria-label="breadcrumb">
+                  <ol class="breadcrumb">
+                    <li class="breadcrumb-item"><a class="breadcrumb-link" href="#">Menu</a></li>
+                    <li aria-current="page" class="breadcrumb-item active">Tasks executions</li>
+                  </ol>
+                </nav>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="ecommerce-widget">
+          <div class="row">
+            <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+              <div class="card">
+                <h5 class="card-header">Tasks executions table</h5>
+                <div class="card-body">
+                  <div class="table-responsive mb-4">
+                    <table *ngIf="executions.length > 0" class="table table-striped table-bordered">
+                      <thead>
+                      <tr>
+                        <th *ngFor="let item of executionKeyMapping">
+                          {{item[1]}}
+                        </th>
+                        <th>Take to analysis</th>
+                      </tr>
+                      </thead>
+                      <tbody>
+                      <tr *ngFor="let exec of executions; let i = index;">
+                        <td *ngFor="let item of executionKeyMapping">
+                          {{exec[item[0]]}}
+                        </td>
+                        <td style="width: 1%">
+                          <button *ngIf="selectedExecutions.includes(i)" class="btn btn-sm btn-outline-light" style="color:green" (click)="clickExecution(i)">
+                            <i class="fas fa-check"></i>
+                          </button>
+                          <button *ngIf="!selectedExecutions.includes(i)" class="btn btn-sm btn-outline-light" style="color:lightgrey" (click)="clickExecution(i)">
+                            <i class="fas fa-check"></i>
+                          </button>
+                        </td>
+                      </tr>
+                      </tbody>
+                      <tfoot>
+                      </tfoot>
+                    </table>
+                    <table *ngIf="executions.length == 0" class="table table-striped table-bordered">
+                      <thead>
+                      <tr style="text-align: center">
+                        <th>Tasks executions table</th>
+                      </tr>
+                      </thead>
+                      <tbody>
+                      <tr>
+                        <td style="text-align: center">
+                          <label style="display: inline-block">
+                            No tasks executions are present. You can add tasks, when they will execute they will appear here.
+                          </label>
+                        </td>
+                      </tr>
+                      </tbody>
+                      <tfoot>
+                      </tfoot>
+                    </table>
+                  </div>
+
+                  <div class="row mb-3">
+                    <div class="col-md-6">
+                      <input class="form-control" style="height: 40px" type="text" placeholder="Choose city/village to analyze" id="locNameIn">
+                    </div>
+                    <div class="col-md-6">
+                      <button class="btn btn-primary btn-block" style="height: 40px" id="renderButton" (click)="renderButtonClick()">Render charts</button>
+                    </div>
+                  </div>
+
+
+
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="row">
+            <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+              <div class="card">
+                <h5 class="card-header">Rendered plots</h5>
+                <div class="card-body">
+                  <div class="row">
+
+                    <div *ngFor="let plot of plots" class="col-xl-6 col-lg-6 col-md-6 col-sm-12 col-12">
+                      <div class="card">
+                        <h5 class="card-header">{{plot[0]}}</h5>
+                        <div class="card-body">
+                          <div class="svg" [innerHTML]="plot[1]"></div>
+                        </div>
+                      </div>
+                    </div>
+
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+</body>
+</html>
