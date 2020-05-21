@@ -1,6 +1,6 @@
 # ProppertyScrapper - tool for analyzing real estate market
 
-Due to coronavirus epidemy real estate in Poland slowed down, some people said prices of plats rised, some said they went down. I wanted to know this information, as well as prices of renting a flat. This project enabled me to do this.
+Due to coronavirus epidemy real estate in Poland slowed down, some people said prices of flats rised, some said they went down. I wanted to know this information, as well as costs of renting a flat. This project enabled me to do this.
 
 ![alt text](https://github.com/AdamJochna/PropertyScrapper/blob/master/img0.png) ![alt text](https://github.com/AdamJochna/PropertyScrapper/blob/master/img1.png)
 
